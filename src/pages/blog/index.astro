@@ -1,14 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { url } from '../../utils/url';
 
-// #region agent log
-const raw = getCollection('blog');
-fetch('http://127.0.0.1:7242/ingest/a03715b4-14c8-4789-9bd0-b624764268ce',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'blog/index.astro:frontmatter',message:'getCollection return before await',data:{isPromise:raw instanceof Promise,hasFilter:typeof raw?.filter,constructor:raw?.constructor?.name},timestamp:Date.now(),hypothesisId:'A'})}).catch(()=>{});
-const resolved = await raw;
-fetch('http://127.0.0.1:7242/ingest/a03715b4-14c8-4789-9bd0-b624764268ce',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'blog/index.astro:frontmatter',message:'getCollection after await',data:{isArray:Array.isArray(resolved),length:resolved?.length,hasFilter:typeof resolved?.filter},timestamp:Date.now(),hypothesisId:'A'})}).catch(()=>{});
-const posts = resolved.filter((p) => !p.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-// #endregion
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Layout title="Blog" description="Blog posts by Muzammil Mahmud">
@@ -21,7 +18,7 @@ const posts = resolved.filter((p) => !p.data.draft).sort((a, b) => b.data.date.v
     </p>
     <div class="post-list">
       {posts.map((post) => (
-          <a href={`/blog/${post.slug}`} class="post-card">
+          <a href={url(`/blog/${post.slug}`)} class="post-card">
             <span class="post-date">
               {post.data.date.toLocaleDateString('en-US', {
                 year: 'numeric',

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { url } from '../utils/url';
 
 const blogPosts = (await getCollection('blog')).filter((p) => !p.data.draft).slice(0, 3);
 const projects = (await getCollection('projects')).slice(0, 3);
@@ -16,8 +17,8 @@ const projects = (await getCollection('projects')).slice(0, 3);
         Builder, researcher, and writer. Welcome to my corner of the web.
       </p>
       <div class="hero-actions">
-        <a href="/about" class="btn btn-primary">About me</a>
-        <a href="/projects" class="btn btn-secondary">See projects</a>
+        <a href={url('/about')} class="btn btn-primary">About me</a>
+        <a href={url('/projects')} class="btn btn-secondary">See projects</a>
       </div>
     </section>
 
@@ -28,7 +29,7 @@ const projects = (await getCollection('projects')).slice(0, 3);
       <div class="post-list">
         {blogPosts.length > 0 ? (
           blogPosts.map((post) => (
-            <a href={`/blog/${post.slug}`} class="post-card">
+            <a href={url(`/blog/${post.slug}`)} class="post-card">
               <span class="post-date">{post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
               <h3 class="post-title">{post.data.title}</h3>
             </a>
@@ -37,7 +38,7 @@ const projects = (await getCollection('projects')).slice(0, 3);
           <p style="color: var(--color-text-muted);">No posts yet. Check back soon.</p>
         )}
       </div>
-      <a href="/blog" style="margin-top: 1rem; display: inline-block;">View all posts →</a>
+      <a href={url('/blog')} style="margin-top: 1rem; display: inline-block;">View all posts →</a>
     </section>
 
     <section class="featured" style="margin-top: 4rem;">
@@ -47,7 +48,7 @@ const projects = (await getCollection('projects')).slice(0, 3);
       <div class="project-grid">
         {projects.length > 0 ? (
           projects.map((project) => (
-            <a href={project.data.demoUrl ?? `/projects`} class="project-card" target={project.data.demoUrl ? "_blank" : undefined} rel={project.data.demoUrl ? "noopener noreferrer" : undefined}>
+            <a href={project.data.demoUrl ?? url('/projects')} class="project-card" target={project.data.demoUrl ? "_blank" : undefined} rel={project.data.demoUrl ? "noopener noreferrer" : undefined}>
               <h3 class="project-title">{project.data.title}</h3>
               <p class="project-desc">{project.data.description}</p>
               {project.data.demoUrl && <span class="project-cta">Try demo →</span>}
@@ -57,7 +58,7 @@ const projects = (await getCollection('projects')).slice(0, 3);
           <p style="color: var(--color-text-muted);">No projects yet. Check back soon.</p>
         )}
       </div>
-      <a href="/projects" style="margin-top: 1rem; display: inline-block;">View all projects →</a>
+      <a href={url('/projects')} style="margin-top: 1rem; display: inline-block;">View all projects →</a>
     </section>
   </div>
 </Layout>
