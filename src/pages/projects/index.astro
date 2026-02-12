@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+const projects = await getCollection('projects');
 ---
 
 <Layout title="Projects" description="Projects and demos by Muzammil Mahmud">
@@ -12,7 +13,7 @@ import { getCollection } from 'astro:content';
       Live demos and side projects. Try them out.
     </p>
     <div class="project-grid">
-      {getCollection('projects').map((project) => (
+      {projects.map((project) => (
         <article class="project-card">
           <h2 class="project-title">{project.data.title}</h2>
           <p class="project-desc">{project.data.description}</p>

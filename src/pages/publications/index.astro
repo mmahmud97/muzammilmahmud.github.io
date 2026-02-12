@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+const publications = (await getCollection('publications')).sort((a, b) => b.data.year - a.data.year);
 ---
 
 <Layout title="Publications" description="Academic and professional publications by Muzammil Mahmud">
@@ -12,9 +13,7 @@ import { getCollection } from 'astro:content';
       Papers, talks, and other work.
     </p>
     <div class="pub-list">
-      {getCollection('publications')
-        .sort((a, b) => b.data.year - a.data.year)
-        .map((pub) => (
+      {publications.map((pub) => (
           <article class="pub-card">
             <h2 class="pub-title">{pub.data.title}</h2>
             <p class="pub-meta">
