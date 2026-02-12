@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Resume" description="Resume and experience of Muzammil Mahmud">
+  <article class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
+    <h1 style="font-size: 2.25rem; font-weight: 700; margin: 0 0 1.5rem 0; letter-spacing: -0.025em;">
+      Resume
+    </h1>
+    <div class="resume-content">
+      <section>
+        <h2>Education</h2>
+        <p>Add your education details here.</p>
+      </section>
+      <section>
+        <h2>Experience</h2>
+        <p>Add your professional experience here.</p>
+      </section>
+      <section>
+        <h2>Skills</h2>
+        <p>Add your technical and soft skills here.</p>
+      </section>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .resume-content section {
+    margin-bottom: 2rem;
+  }
+
+  .resume-content h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .resume-content p {
+    margin: 0;
+    line-height: 1.6;
+  }
+</style>

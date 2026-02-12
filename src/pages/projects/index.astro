@@ -1,0 +1,128 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+---
+
+<Layout title="Projects" description="Projects and demos by Muzammil Mahmud">
+  <div class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
+    <h1 style="font-size: 2.25rem; font-weight: 700; margin: 0 0 1.5rem 0; letter-spacing: -0.025em;">
+      Projects
+    </h1>
+    <p style="color: var(--color-text-muted); margin-bottom: 2rem;">
+      Live demos and side projects. Try them out.
+    </p>
+    <div class="project-grid">
+      {getCollection('projects').map((project) => (
+        <article class="project-card">
+          <h2 class="project-title">{project.data.title}</h2>
+          <p class="project-desc">{project.data.description}</p>
+          {project.data.tech && project.data.tech.length > 0 && (
+            <div class="project-tech">
+              {project.data.tech.map((t) => (
+                <span class="tech-tag">{t}</span>
+              ))}
+            </div>
+          )}
+          <div class="project-actions">
+            {project.data.demoUrl && (
+              <a
+                href={project.data.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary"
+              >
+                Try demo
+              </a>
+            )}
+            {project.data.repoUrl && (
+              <a
+                href={project.data.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-secondary"
+              >
+                Source
+              </a>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .project-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .project-card {
+    padding: 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .project-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .project-desc {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .tech-tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-bg);
+    border-radius: 0.25rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .project-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-accent);
+  }
+</style>

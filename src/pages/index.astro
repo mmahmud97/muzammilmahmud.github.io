@@ -1,0 +1,170 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const blogPosts = (await getCollection('blog')).filter((p) => !p.data.draft).slice(0, 3);
+const projects = (await getCollection('projects')).slice(0, 3);
+---
+
+<Layout title="Home" description="Personal portfolio, blog, and projects by Muzammil Mahmud">
+  <div class="container" style="padding-top: 4rem; padding-bottom: 4rem;">
+    <section class="hero">
+      <h1 style="font-size: 2.5rem; font-weight: 700; margin: 0 0 1rem 0; letter-spacing: -0.025em;">
+        Hi, I'm Muzammil
+      </h1>
+      <p class="lead" style="font-size: 1.25rem; color: var(--color-text-muted); margin: 0 0 2rem 0;">
+        Builder, researcher, and writer. Welcome to my corner of the web.
+      </p>
+      <div class="hero-actions">
+        <a href="/about" class="btn btn-primary">About me</a>
+        <a href="/projects" class="btn btn-secondary">See projects</a>
+      </div>
+    </section>
+
+    <section class="featured" style="margin-top: 4rem;">
+      <h2 style="font-size: 1.125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); margin: 0 0 1.5rem 0;">
+        Latest from the blog
+      </h2>
+      <div class="post-list">
+        {blogPosts.length > 0 ? (
+          blogPosts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="post-card">
+              <span class="post-date">{post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+              <h3 class="post-title">{post.data.title}</h3>
+            </a>
+          ))
+        ) : (
+          <p style="color: var(--color-text-muted);">No posts yet. Check back soon.</p>
+        )}
+      </div>
+      <a href="/blog" style="margin-top: 1rem; display: inline-block;">View all posts →</a>
+    </section>
+
+    <section class="featured" style="margin-top: 4rem;">
+      <h2 style="font-size: 1.125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); margin: 0 0 1.5rem 0;">
+        Featured projects
+      </h2>
+      <div class="project-grid">
+        {projects.length > 0 ? (
+          projects.map((project) => (
+            <a href={project.data.demoUrl ?? `/projects`} class="project-card" target={project.data.demoUrl ? "_blank" : undefined} rel={project.data.demoUrl ? "noopener noreferrer" : undefined}>
+              <h3 class="project-title">{project.data.title}</h3>
+              <p class="project-desc">{project.data.description}</p>
+              {project.data.demoUrl && <span class="project-cta">Try demo →</span>}
+            </a>
+          ))
+        ) : (
+          <p style="color: var(--color-text-muted);">No projects yet. Check back soon.</p>
+        )}
+      </div>
+      <a href="/projects" style="margin-top: 1rem; display: inline-block;">View all projects →</a>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius);
+    font-weight: 500;
+    transition: all var(--transition);
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-accent);
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .post-card {
+    display: block;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+    color: inherit;
+  }
+
+  .post-card:hover {
+    color: var(--color-text);
+  }
+
+  .post-card:first-child {
+    padding-top: 0;
+  }
+
+  .post-date {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .post-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0.25rem 0 0 0;
+  }
+
+  .project-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .project-card {
+    display: block;
+    padding: 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    color: inherit;
+    transition: border-color var(--transition);
+  }
+
+  .project-card:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .project-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .project-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .project-cta {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--color-accent);
+  }
+</style>

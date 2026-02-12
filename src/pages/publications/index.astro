@@ -1,0 +1,75 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+---
+
+<Layout title="Publications" description="Academic and professional publications by Muzammil Mahmud">
+  <div class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
+    <h1 style="font-size: 2.25rem; font-weight: 700; margin: 0 0 1.5rem 0; letter-spacing: -0.025em;">
+      Publications
+    </h1>
+    <p style="color: var(--color-text-muted); margin-bottom: 2rem;">
+      Papers, talks, and other work.
+    </p>
+    <div class="pub-list">
+      {getCollection('publications')
+        .sort((a, b) => b.data.year - a.data.year)
+        .map((pub) => (
+          <article class="pub-card">
+            <h2 class="pub-title">{pub.data.title}</h2>
+            <p class="pub-meta">
+              {pub.data.authors} — {pub.data.venue}, {pub.data.year}
+            </p>
+            <div class="pub-links">
+              {pub.data.link && (
+                <a href={pub.data.link} target="_blank" rel="noopener noreferrer">
+                  Link
+                </a>
+              )}
+              {pub.data.pdf && (
+                <a href={pub.data.pdf} target="_blank" rel="noopener noreferrer">
+                  PDF
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .pub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .pub-card {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .pub-card:last-child {
+    border-bottom: none;
+  }
+
+  .pub-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 0.375rem 0;
+  }
+
+  .pub-meta {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .pub-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+  }
+</style>
